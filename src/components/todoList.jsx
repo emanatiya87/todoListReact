@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import Container from "@mui/material/Container";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -29,7 +29,9 @@ import { Chip } from "@mui/material";
 
 export default function TodoList() {
   const { inputTasks, setInputTasks } = useContext(TaskContext);
+  const [allTasks, setAllTasks] = useState(inputTasks);
   const [alignment, setAlignment] = useState("all");
+  const [searchItem, setSearchItem] = useState("");
   let newtask = "";
   let newtaskDetails = "";
   let newDueDate = "";
@@ -43,7 +45,14 @@ export default function TodoList() {
     }
   };
   let tasks = inputTasks.map((t) => {
-    return <Mission input={t} key={t.id} />;
+    return (
+      <Mission
+        input={t}
+        key={t.id}
+        allTasks={allTasks}
+        setAllTasks={setAllTasks}
+      />
+    );
   });
   return (
     <div>
@@ -56,7 +65,51 @@ export default function TodoList() {
         }}
       >
         <h1>Todo List</h1>
-
+        <form
+          action=""
+          onSubmit={(e) => {
+            e.preventDefault();
+            let searchValues = allTasks.filter((t) => {
+              return t.title
+                .toLowerCase()
+                .includes(searchItem.trim().toLowerCase());
+            });
+            setInputTasks(searchValues);
+          }}
+        >
+          <Stack direction="row" spacing={1}>
+            {" "}
+            <TextField
+              label="Search"
+              variant="outlined"
+              fullWidth
+              value={searchItem}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => {
+                setSearchItem(e.target.value);
+              }}
+            />
+            <Button variant="contained" size="small" type="submit">
+              Search
+            </Button>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => {
+                setSearchItem(" ");
+                setInputTasks(allTasks);
+              }}
+            >
+              Reset
+            </Button>
+          </Stack>
+        </form>
         <Stack
           spacing={1}
           direction="row"
@@ -128,6 +181,7 @@ export default function TodoList() {
             ];
             setInputTasks(updatedTasks);
             localStorage.setItem("todos", JSON.stringify(updatedTasks));
+            setAllTasks(updatedTasks);
           }}
         >
           <Stack

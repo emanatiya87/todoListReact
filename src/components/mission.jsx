@@ -25,7 +25,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-export default function Mission({ input }) {
+export default function Mission({ input, allTasks, setAllTasks }) {
   // pop up deleting
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
@@ -51,7 +51,7 @@ export default function Mission({ input }) {
   // update
   const handleSubmitUpdate = (e, i) => {
     e.preventDefault();
-    const newTasks = inputTasks.map((t) =>
+    const newTasks = allTasks.map((t) =>
       t.id === i
         ? {
             ...t,
@@ -65,22 +65,25 @@ export default function Mission({ input }) {
     setInputTasks(newTasks);
     localStorage.setItem("todos", JSON.stringify(newTasks));
     handleCloseEdit();
+    setAllTasks(newTasks);
   };
   const { inputTasks, setInputTasks } = useContext(TaskContext);
   // done
   function handleComplete(i) {
-    const newTasks = inputTasks.map((t) =>
+    const newTasks = allTasks.map((t) =>
       t.id === i ? { ...t, isComplete: !t.isComplete } : t
     );
     setInputTasks(newTasks);
+    setAllTasks(newTasks);
     localStorage.setItem("todos", JSON.stringify(newTasks));
   }
   // delete
   function handleDelete(i) {
-    const newTasks = inputTasks.filter((t) => {
+    const newTasks = allTasks.filter((t) => {
       return t.id != i;
     });
     setInputTasks(newTasks);
+    setAllTasks(newTasks);
     localStorage.setItem("todos", JSON.stringify(newTasks));
   }
   // priorty
