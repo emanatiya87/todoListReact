@@ -127,6 +127,12 @@ export default function TodoList() {
               fontWeight: "bold",
               cursor: "pointer",
             }}
+            onClick={() => {
+              let filtered = allTasks.filter((t) => {
+                return t.priorty == "Low";
+              });
+              setInputTasks(filtered);
+            }}
           />
           <Chip
             label="Medium"
@@ -136,6 +142,12 @@ export default function TodoList() {
               color: "#92400E",
               fontWeight: "bold",
               cursor: "pointer",
+            }}
+            onClick={() => {
+              let filtered = allTasks.filter((t) => {
+                return t.priorty == "Medium";
+              });
+              setInputTasks(filtered);
             }}
           />
           <Chip
@@ -147,6 +159,12 @@ export default function TodoList() {
               fontWeight: "bold",
               cursor: "pointer",
             }}
+            onClick={() => {
+              let filtered = allTasks.filter((t) => {
+                return t.priorty == "High";
+              });
+              setInputTasks(filtered);
+            }}
           />
         </Stack>
         <ToggleButtonGroup
@@ -157,9 +175,36 @@ export default function TodoList() {
           aria-label="Platform"
         >
           {" "}
-          <ToggleButton value="all">ALL messions</ToggleButton>
-          <ToggleButton value="done">Done</ToggleButton>
-          <ToggleButton value="waiting">Waiting List</ToggleButton>
+          <ToggleButton
+            value="all"
+            onClick={() => {
+              setInputTasks(allTasks);
+            }}
+          >
+            ALL messions
+          </ToggleButton>
+          <ToggleButton
+            value="done"
+            onClick={() => {
+              let filtered = allTasks.filter((t) => {
+                return t.isComplete == true;
+              });
+              setInputTasks(filtered);
+            }}
+          >
+            Done
+          </ToggleButton>
+          <ToggleButton
+            value="waiting"
+            onClick={() => {
+              let filtered = allTasks.filter((t) => {
+                return t.isComplete == false;
+              });
+              setInputTasks(filtered);
+            }}
+          >
+            Waiting List
+          </ToggleButton>
         </ToggleButtonGroup>
         <Stack spacing={1} style={{ margin: "20px 0" }}>
           {tasks}
