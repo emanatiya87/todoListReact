@@ -44,6 +44,11 @@ export default function TodoList() {
       setAlignment(newAlignment);
     }
   };
+  let priortyLevels = {
+    High: 1,
+    Medium: 2,
+    Low: 3,
+  };
   let tasks = inputTasks.map((t) => {
     return (
       <Mission
@@ -118,6 +123,20 @@ export default function TodoList() {
           alignItems="center"
         >
           <h2>Priority:</h2>
+
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => {
+              let filtered = [...allTasks].sort((a, b) => {
+                return priortyLevels[a.priorty] - priortyLevels[b.priorty];
+              });
+              setInputTasks(filtered);
+            }}
+          >
+            {" "}
+            Sort By priorty
+          </Button>
           <Chip
             label="Low"
             sx={{
