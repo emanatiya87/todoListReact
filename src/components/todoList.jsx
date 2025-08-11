@@ -137,7 +137,7 @@ export default function TodoList() {
             label="Low"
             filter={() => {
               let filtered = allTasks.filter((t) => {
-                return t.priorty == "Low";
+                return t.priorty === "Low";
               });
               setInputTasks(filtered);
             }}
@@ -146,7 +146,7 @@ export default function TodoList() {
             label="Medium"
             filter={() => {
               let filtered = allTasks.filter((t) => {
-                return t.priorty == "Medium";
+                return t.priorty === "Medium";
               });
               setInputTasks(filtered);
             }}
@@ -155,7 +155,7 @@ export default function TodoList() {
             label="High"
             filter={() => {
               let filtered = allTasks.filter((t) => {
-                return t.priorty == "High";
+                return t.priorty === "High";
               });
               setInputTasks(filtered);
             }}
@@ -181,7 +181,7 @@ export default function TodoList() {
             value="done"
             onClick={() => {
               let filtered = allTasks.filter((t) => {
-                return t.isComplete == true;
+                return t.isComplete === true;
               });
               setInputTasks(filtered);
             }}
@@ -192,7 +192,7 @@ export default function TodoList() {
             value="waiting"
             onClick={() => {
               let filtered = allTasks.filter((t) => {
-                return t.isComplete == false;
+                return t.isComplete === false;
               });
               setInputTasks(filtered);
             }}
