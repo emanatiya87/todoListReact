@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import Container from "@mui/material/Container";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -9,8 +9,6 @@ import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import Mission from "./mission";
-import { useContext } from "react";
-import { TaskContext } from "../context/tasksContext";
 import { v4 as uuidv4 } from "uuid";
 // date
 import dayjs from "dayjs";
@@ -23,12 +21,13 @@ import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-
-import { Chip } from "@mui/material";
+import Select from "@mui/material/Select";
+import ChipPriority from "./chipPriority";
+import useTodoStore from "../store/todoStore";
 
 export default function TodoList() {
-  const { inputTasks, setInputTasks } = useContext(TaskContext);
+  const inputTasks = useTodoStore((state) => state.inputTasks);
+  const setInputTasks = useTodoStore((state) => state.setInputTasks);
   const [allTasks, setAllTasks] = useState(inputTasks);
   const [alignment, setAlignment] = useState("all");
   const [searchItem, setSearchItem] = useState("");
@@ -137,54 +136,33 @@ export default function TodoList() {
             {" "}
             Sort By priorty
           </Button>
-          <Chip
+          <ChipPriority
             label="Low"
-            sx={{
-              boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
-              backgroundColor: "#D1FAE5",
-              color: "#065F46",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}
-            onClick={() => {
+            filter={() => {
               let filtered = allTasks.filter((t) => {
                 return t.priorty == "Low";
               });
               setInputTasks(filtered);
             }}
-          />
-          <Chip
+          ></ChipPriority>
+          <ChipPriority
             label="Medium"
-            sx={{
-              boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
-              backgroundColor: "#FEF3C7",
-              color: "#92400E",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}
-            onClick={() => {
+            filter={() => {
               let filtered = allTasks.filter((t) => {
                 return t.priorty == "Medium";
               });
               setInputTasks(filtered);
             }}
-          />
-          <Chip
+          ></ChipPriority>
+          <ChipPriority
             label="High"
-            sx={{
-              boxShadow: "0 1px 4px rgba(0,0,0,0.1)",
-              backgroundColor: "#FECACA",
-              color: "#991B1B",
-              fontWeight: "bold",
-              cursor: "pointer",
-            }}
-            onClick={() => {
+            filter={() => {
               let filtered = allTasks.filter((t) => {
                 return t.priorty == "High";
               });
               setInputTasks(filtered);
             }}
-          />
+          ></ChipPriority>
         </Stack>
         <ToggleButtonGroup
           color="primary"
@@ -244,7 +222,6 @@ export default function TodoList() {
               },
             ];
             setInputTasks(updatedTasks);
-            localStorage.setItem("todos", JSON.stringify(updatedTasks));
             setAllTasks(updatedTasks);
           }}
         >
