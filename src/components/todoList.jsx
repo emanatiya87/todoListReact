@@ -35,10 +35,7 @@ export default function TodoList() {
   let newtaskDetails = "";
   let newDueDate = "";
   let newPriorty = "";
-  const handleChange = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
-  ) => {
+  const handleChange = (event, newAlignment) => {
     if (newAlignment !== null) {
       setAlignment(newAlignment);
     }
