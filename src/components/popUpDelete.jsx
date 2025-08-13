@@ -6,14 +6,14 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-export default function PopUpDelete({ input, allTasks, setAllTasks }) {
+export default function PopUpDelete({ input }) {
   // from store
   const inputTasks = useTodoStore((state) => state.inputTasks);
   const setInputTasks = useTodoStore((state) => state.setInputTasks);
-  const openDelete = useTodoStore((state) => state.openDelete);
-  const setOpenDelete = useTodoStore((state) => state.setOpenDelete);
+  const deletingTaskId = useTodoStore((state) => state.deletingTaskId);
+  const { allTasks, setAllTasks, setDeletingTaskId } = useTodoStore();
   const handleCloseDelete = () => {
-    setOpenDelete(false);
+    setDeletingTaskId(null);
   };
   //confirm delete
   function handleDelete(i) {
@@ -22,14 +22,14 @@ export default function PopUpDelete({ input, allTasks, setAllTasks }) {
     });
     setInputTasks(newTasks);
     setAllTasks(newTasks);
-    setOpenDelete(false);
+    setDeletingTaskId(null);
   }
   return (
     <>
       {" "}
       {/* pop up for confirm deleteing */}
       <Dialog
-        open={openDelete}
+        open={deletingTaskId == input.id}
         onClose={handleCloseDelete}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"

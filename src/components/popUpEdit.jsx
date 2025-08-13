@@ -17,12 +17,13 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import useTodoStore from "../store/todoStore";
-export default function PopUpEdit({ input, allTasks, setAllTasks }) {
+export default function PopUpEdit({ input }) {
   // from store
   const inputTasks = useTodoStore((state) => state.inputTasks);
   const setInputTasks = useTodoStore((state) => state.setInputTasks);
   const editingTaskId = useTodoStore((state) => state.editingTaskId);
   const setEditingTaskId = useTodoStore((state) => state.setEditingTaskId);
+  const { allTasks, setAllTasks } = useTodoStore();
 
   // pop up edit
   const [inputUpdate, setInputUpdate] = useState({

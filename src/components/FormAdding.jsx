@@ -16,10 +16,11 @@ import Button from "@mui/material/Button";
 import { v4 as uuidv4 } from "uuid";
 import useTodoStore from "../store/todoStore";
 
-export default function FormAdding({ allTasks, setAllTasks }) {
+export default function FormAdding() {
   // from store
   const inputTasks = useTodoStore((state) => state.inputTasks);
   const setInputTasks = useTodoStore((state) => state.setInputTasks);
+  const { allTasks, setAllTasks } = useTodoStore();
 
   let newtask = "";
   let newtaskDetails = "";

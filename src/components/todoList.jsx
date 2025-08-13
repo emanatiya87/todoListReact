@@ -7,9 +7,7 @@ import FormAdding from "./FormAdding";
 import FilterationHeader from "./FilterationHeader";
 export default function TodoList() {
   const inputTasks = useTodoStore((state) => state.inputTasks);
-  const setInputTasks = useTodoStore((state) => state.setInputTasks);
   const [allTasks, setAllTasks] = useState(inputTasks);
-
   let tasks = inputTasks.map((t) => {
     return (
       <Mission

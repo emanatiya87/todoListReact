@@ -7,41 +7,41 @@ import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import ChipPriority from "./chipPriority";
 import useTodoStore from "../store/todoStore";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export default function FilterationHeader({ allTasks, setAllTasks }) {
+export default function FilterationHeader() {
   const [alignment, setAlignment] = useState("all");
   const [searchItem, setSearchItem] = useState("");
-  const inputTasks = useTodoStore((state) => state.inputTasks);
+
+  const allTasks = useTodoStore((state) => state.allTasks);
   const setInputTasks = useTodoStore((state) => state.setInputTasks);
 
-  let priortyLevels = {
-    High: 1,
-    Medium: 2,
-    Low: 3,
-  };
+  const priortyLevels = { High: 1, Medium: 2, Low: 3 };
+
+  // Show all tasks initially
+  useEffect(() => {
+    setInputTasks(allTasks);
+  }, [allTasks, setInputTasks]);
 
   const handleChange = (event, newAlignment) => {
     if (newAlignment !== null) {
       setAlignment(newAlignment);
     }
   };
+
   return (
     <>
+      {/* Search */}
       <form
-        action=""
         onSubmit={(e) => {
           e.preventDefault();
-          let searchValues = allTasks.filter((t) => {
-            return t.title
-              .toLowerCase()
-              .includes(searchItem.trim().toLowerCase());
-          });
+          let searchValues = allTasks.filter((t) =>
+            t.title.toLowerCase().includes(searchItem.trim().toLowerCase())
+          );
           setInputTasks(searchValues);
         }}
       >
         <Stack direction="row" spacing={1}>
-          {" "}
           <TextField
             label="Search"
             variant="outlined"
@@ -54,9 +54,7 @@ export default function FilterationHeader({ allTasks, setAllTasks }) {
                 </InputAdornment>
               ),
             }}
-            onChange={(e) => {
-              setSearchItem(e.target.value);
-            }}
+            onChange={(e) => setSearchItem(e.target.value)}
           />
           <Button variant="contained" size="small" type="submit">
             Search
@@ -65,14 +63,17 @@ export default function FilterationHeader({ allTasks, setAllTasks }) {
             variant="outlined"
             size="small"
             onClick={() => {
-              setSearchItem(" ");
+              setSearchItem("");
               setInputTasks(allTasks);
+              setAlignment("all");
             }}
           >
             Reset
           </Button>
         </Stack>
       </form>
+
+      {/* Priority */}
       <Stack
         spacing={1}
         direction="row"
@@ -81,48 +82,31 @@ export default function FilterationHeader({ allTasks, setAllTasks }) {
         alignItems="center"
       >
         <h2>Priority:</h2>
-
         <Button
           variant="outlined"
           size="small"
           onClick={() => {
-            let filtered = [...allTasks].sort((a, b) => {
-              return priortyLevels[a.priorty] - priortyLevels[b.priorty];
-            });
-            setInputTasks(filtered);
+            let sorted = [...allTasks].sort(
+              (a, b) => priortyLevels[a.priorty] - priortyLevels[b.priorty]
+            );
+            setInputTasks(sorted);
           }}
         >
-          {" "}
-          Sort By priorty
+          Sort By Priority
         </Button>
-        <ChipPriority
-          label="Low"
-          filter={() => {
-            let filtered = allTasks.filter((t) => {
-              return t.priorty === "Low";
-            });
-            setInputTasks(filtered);
-          }}
-        ></ChipPriority>
-        <ChipPriority
-          label="Medium"
-          filter={() => {
-            let filtered = allTasks.filter((t) => {
-              return t.priorty === "Medium";
-            });
-            setInputTasks(filtered);
-          }}
-        ></ChipPriority>
-        <ChipPriority
-          label="High"
-          filter={() => {
-            let filtered = allTasks.filter((t) => {
-              return t.priorty === "High";
-            });
-            setInputTasks(filtered);
-          }}
-        ></ChipPriority>
+        {["Low", "Medium", "High"].map((level) => (
+          <ChipPriority
+            key={level}
+            label={level}
+            filter={() => {
+              let filtered = allTasks.filter((t) => t.priorty === level);
+              setInputTasks(filtered);
+            }}
+          />
+        ))}
       </Stack>
+
+      {/* Toggle buttons */}
       <ToggleButtonGroup
         color="primary"
         value={alignment}
@@ -130,34 +114,22 @@ export default function FilterationHeader({ allTasks, setAllTasks }) {
         onChange={handleChange}
         aria-label="Platform"
       >
-        {" "}
-        <ToggleButton
-          value="all"
-          onClick={() => {
-            setInputTasks(allTasks);
-          }}
-        >
-          ALL messions
+        <ToggleButton value="all" onClick={() => setInputTasks(allTasks)}>
+          ALL missions
         </ToggleButton>
         <ToggleButton
           value="done"
-          onClick={() => {
-            let filtered = allTasks.filter((t) => {
-              return t.isComplete === true;
-            });
-            setInputTasks(filtered);
-          }}
+          onClick={() =>
+            setInputTasks(allTasks.filter((t) => t.isComplete === true))
+          }
         >
           Done
         </ToggleButton>
         <ToggleButton
           value="waiting"
-          onClick={() => {
-            let filtered = allTasks.filter((t) => {
-              return t.isComplete === false;
-            });
-            setInputTasks(filtered);
-          }}
+          onClick={() =>
+            setInputTasks(allTasks.filter((t) => t.isComplete === false))
+          }
         >
           Waiting List
         </ToggleButton>
