@@ -12,10 +12,8 @@ import { useState, useEffect } from "react";
 export default function FilterationHeader() {
   const [alignment, setAlignment] = useState("all");
   const [searchItem, setSearchItem] = useState("");
-
   const allTasks = useTodoStore((state) => state.allTasks);
   const setInputTasks = useTodoStore((state) => state.setInputTasks);
-
   const priortyLevels = { High: 1, Medium: 2, Low: 3 };
 
   // Show all tasks initially
@@ -23,7 +21,7 @@ export default function FilterationHeader() {
     setInputTasks(allTasks);
   }, [allTasks, setInputTasks]);
 
-  const handleChange = (event, newAlignment) => {
+  const handleChange = (newAlignment) => {
     if (newAlignment !== null) {
       setAlignment(newAlignment);
     }

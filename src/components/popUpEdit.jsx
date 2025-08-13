@@ -19,7 +19,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import useTodoStore from "../store/todoStore";
 export default function PopUpEdit({ input }) {
   // from store
-  const inputTasks = useTodoStore((state) => state.inputTasks);
   const setInputTasks = useTodoStore((state) => state.setInputTasks);
   const editingTaskId = useTodoStore((state) => state.editingTaskId);
   const setEditingTaskId = useTodoStore((state) => state.setEditingTaskId);
@@ -32,9 +31,6 @@ export default function PopUpEdit({ input }) {
     priorty: input.priorty,
     dueDate: input.dueDate,
   });
-  const handleCloseEdit = () => {
-    setEditingTaskId(null);
-  };
   // update
   const handleSubmitUpdate = (e, i) => {
     e.preventDefault();
@@ -50,14 +46,16 @@ export default function PopUpEdit({ input }) {
         : t
     );
     setInputTasks(newTasks);
-    handleCloseEdit();
     setAllTasks(newTasks);
     setEditingTaskId(null);
   };
   return (
     <>
       {/* pop up for Edit */}
-      <Dialog open={editingTaskId === input.id} onClose={handleCloseEdit}>
+      <Dialog
+        open={editingTaskId === input.id}
+        onClose={() => setEditingTaskId(null)}
+      >
         <DialogTitle>Edit </DialogTitle>
         <DialogContent sx={{ paddingBottom: 0 }}>
           <form
@@ -121,7 +119,7 @@ export default function PopUpEdit({ input }) {
               </DemoContainer>
             </LocalizationProvider>
             <DialogActions>
-              <Button onClick={handleCloseEdit}>Cancel</Button>
+              <Button onClick={() => setEditingTaskId(null)}>Cancel</Button>
               <Button type="submit">Save Edits</Button>
             </DialogActions>
           </form>

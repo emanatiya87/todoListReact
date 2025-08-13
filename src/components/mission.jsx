@@ -8,15 +8,7 @@ import useTodoStore from "../store/todoStore";
 import ChipPriority from "./chipPriority";
 
 export default function Mission({ input }) {
-  const { allTasks, setAllTasks, setDeletingTaskId, setEditingTaskId } =
-    useTodoStore();
-
-  function handleComplete(id) {
-    const updatedTasks = allTasks.map((t) =>
-      t.id === id ? { ...t, isComplete: !t.isComplete } : t
-    );
-    setAllTasks(updatedTasks);
-  }
+  const { setDeletingTaskId, setEditingTaskId, completeTask } = useTodoStore();
 
   return (
     <>
@@ -61,7 +53,7 @@ export default function Mission({ input }) {
               padding: "0 1rem",
               cursor: "pointer",
             }}
-            onClick={() => handleComplete(input.id)}
+            onClick={() => completeTask(input.id)}
           />
           <EditSquareIcon
             style={{

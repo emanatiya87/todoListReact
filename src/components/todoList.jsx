@@ -1,22 +1,13 @@
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
-import { useState } from "react";
 import Mission from "./mission";
 import useTodoStore from "../store/todoStore";
 import FormAdding from "./FormAdding";
 import FilterationHeader from "./FilterationHeader";
 export default function TodoList() {
   const inputTasks = useTodoStore((state) => state.inputTasks);
-  const [allTasks, setAllTasks] = useState(inputTasks);
   let tasks = inputTasks.map((t) => {
-    return (
-      <Mission
-        input={t}
-        key={t.id}
-        allTasks={allTasks}
-        setAllTasks={setAllTasks}
-      />
-    );
+    return <Mission input={t} key={t.id} />;
   });
   return (
     <div>
@@ -29,15 +20,12 @@ export default function TodoList() {
         }}
       >
         <h1>Todo List</h1>
-        <FilterationHeader
-          allTasks={allTasks}
-          setAllTasks={setAllTasks}
-        ></FilterationHeader>
+        <FilterationHeader></FilterationHeader>
 
         <Stack spacing={1} style={{ margin: "20px 0" }}>
           {tasks}
         </Stack>
-        <FormAdding allTasks={allTasks} setAllTasks={setAllTasks}></FormAdding>
+        <FormAdding></FormAdding>
       </Container>
     </div>
   );

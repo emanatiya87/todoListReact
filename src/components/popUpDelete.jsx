@@ -8,29 +8,17 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 export default function PopUpDelete({ input }) {
   // from store
-  const inputTasks = useTodoStore((state) => state.inputTasks);
-  const setInputTasks = useTodoStore((state) => state.setInputTasks);
   const deletingTaskId = useTodoStore((state) => state.deletingTaskId);
-  const { allTasks, setAllTasks, setDeletingTaskId } = useTodoStore();
-  const handleCloseDelete = () => {
-    setDeletingTaskId(null);
-  };
-  //confirm delete
-  function handleDelete(i) {
-    const newTasks = allTasks.filter((t) => {
-      return t.id != i;
-    });
-    setInputTasks(newTasks);
-    setAllTasks(newTasks);
-    setDeletingTaskId(null);
-  }
+  const setDeletingTaskId = useTodoStore((state) => state.setDeletingTaskId);
+  const deleteTask = useTodoStore((state) => state.deleteTask);
+
   return (
     <>
       {" "}
       {/* pop up for confirm deleteing */}
       <Dialog
         open={deletingTaskId == input.id}
-        onClose={handleCloseDelete}
+        onClose={() => setDeletingTaskId(null)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -41,10 +29,10 @@ export default function PopUpDelete({ input }) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDelete}> Cancel</Button>
+          <Button onClick={() => setDeletingTaskId(null)}> Cancel</Button>
           <Button
             onClick={() => {
-              handleDelete(input.id);
+              deleteTask(input.id);
             }}
             autoFocus
           >
