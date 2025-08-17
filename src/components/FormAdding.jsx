@@ -22,7 +22,13 @@ import useTodoStore from "../store/todoStore";
 export default function FormAdding() {
   // from store
   const addTask = useTodoStore((state) => state.addTask);
-  const { register, handleSubmit, setValue, reset } = useForm({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       title: "",
       body: "",
@@ -50,21 +56,32 @@ export default function FormAdding() {
             id="outlined-basic"
             label="Add Mission"
             variant="outlined"
-            {...register("title")}
-            inputProps={{
-              minLength: 1,
-              maxLength: 100,
-            }}
-            required
+            {...register("title", {
+              minLength: {
+                value: 2,
+                message: "Title must be at least 2 characters",
+              },
+              maxLength: {
+                value: 100,
+                message: "Title cannot exceed 100 characters",
+              },
+              required: "Title is required",
+            })}
+            error={!!errors.title}
+            helperText={errors.title ? errors.title.message : ""}
           />
           <TextField
             id="outlined-basic"
             label="Add Mission Details"
             variant="outlined"
-            {...register("body")}
-            inputProps={{
-              maxLength: 500,
-            }}
+            {...register("body", {
+              maxLength: {
+                value: 500,
+                message: "Title cannot exceed 500 characters",
+              },
+            })}
+            error={!!errors.title}
+            helperText={errors.title ? errors.title.message : ""}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DemoContainer components={["DatePicker"]}>
